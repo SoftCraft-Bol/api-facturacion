@@ -1,4 +1,5 @@
 const { generarYEnviarFactura } = require('../services/facturaService');
+const SiatService = require('../services/siatService');
 
 const emitir = async (req, res) => {
     try {
