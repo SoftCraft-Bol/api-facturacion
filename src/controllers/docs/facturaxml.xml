@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<facturaComputarizadaCompraVenta xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaComputarizadaCompraVenta.xsd">
+  <cabecera>
+    <nitEmisor>5153610012</nitEmisor>
+    <razonSocialEmisor>PRUEBA FACTURA</razonSocialEmisor>
+    <municipio>Cochabamba</municipio>
+    <telefono>77490451</telefono>
+    <numeroFactura>1</numeroFactura>
+    <cuf>1609FD28BF14E16C75EFA21F930663099BAF28606A2123213</cuf>
+    <cufd>ABCDEF12345678901234567890123456</cufd>
+    <codigoSucursal>0</codigoSucursal>
+    <direccion>Av. Siempre Viva Nro. 123</direccion>
+    <codigoPuntoVenta>0</codigoPuntoVenta>
+    <fechaEmision>2025-01-02T12:34:56.789</fechaEmision>
+    <nombreRazonSocial>Juan Pérez</nombreRazonSocial>
+    <codigoTipoDocumentoIdentidad>1</codigoTipoDocumentoIdentidad>
+    <numeroDocumento>12345678</numeroDocumento>
+    <complemento xsi:nil="true"/>
+    <codigoCliente>12345678</codigoCliente>
+    <codigoMetodoPago>1</codigoMetodoPago>
+    <numeroTarjeta xsi:nil="true"/>
+    <montoTotal>150.5</montoTotal>
+    <montoTotalSujetoIva>150.5</montoTotalSujetoIva>
+    <codigoMoneda>1</codigoMoneda>
+    <tipoCambio>1</tipoCambio>
+    <montoTotalMoneda>150.5</montoTotalMoneda>
+    <montoGiftCard xsi:nil="true"/>
+    <descuentoAdicional>0</descuentoAdicional>
+    <codigoExcepcion>0</codigoExcepcion>
+    <cafc xsi:nil="true"/>
+    <leyenda>Gracias por su compra.</leyenda>
+    <usuario>jdoe</usuario>
+    <codigoDocumentoSector>1</codigoDocumentoSector>
+  </cabecera>
+  <detalle>
+    <actividadEconomica>545454</actividadEconomica>
+    <codigoProductoSin>4545454</codigoProductoSin>
+    <codigoProducto>com1</codigoProducto>
+    <descripcion>Producto A</descripcion>
+    <cantidad>2</cantidad>
+    <unidadMedida>75</unidadMedida>
+    <precioUnitario>150.5</precioUnitario>
+    <montoDescuento>0</montoDescuento>
+    <subTotal>4000</subTotal>
+    <numeroSerie>4545454</numeroSerie>
+    <numeroImei>159753</numeroImei>
+  </detalle>
+</facturaComputarizadaCompraVenta>
