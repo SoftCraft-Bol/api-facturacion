@@ -7,6 +7,7 @@ const zlib = require("zlib");
 const path = require("path");
 const crypto = require("crypto");
 const { create } = require("xmlbuilder2");
+const { transform } = require("pdfkit");
 
 class SiatController {
   static async verificarComunicacion(req, res) {
@@ -228,11 +229,11 @@ class SiatController {
         encoding: "UTF-8",
         standalone: true,
       })
-        .ele("facturaComputarizadaCompraVenta")
+        .ele("facturaElectronicaCompraVenta")
         .att(
           xsi,
           "xsi:noNamespaceSchemaLocation",
-          "facturaComputarizadaCompraVenta.xsd"
+          "facturaElectronicaCompraVenta.xsd"
         );
 
       formatoXml(temporal, xml);
@@ -256,38 +257,37 @@ class SiatController {
         .update(fs.readFileSync(xmlPath))
         .digest("hex");
 
-        //ACA PONER LA LOGICA PARA INSERTAR EN LA BASE DE DATOS
-      // const data = insertarFactura(
-      //   req.body,
-      //   idCliente,
-      //   numeroFactura,
-      //   cuf[0],
-      //   valores.fechaEmision,
-      //   valores.codigoMetodoPago,
-      //   valores.montoTotal,
-      //   valores.montoTotalSujetoIva,
-      //   valores.descuentoAdicional,
-      //   fs.readFileSync(xmlPath, "utf8")
-      // );
+      const data = insertarFactura(
+        req.body,
+        idCliente,
+        numeroFactura,
+        cuf,
+        valores.fechaEmision,
+        valores.codigoMetodoPago,
+        valores.montoTotal,
+        valores.montoTotalSujetoIva,
+        valores.descuentoAdicional,
+        fs.readFileSync(xmlPath, "utf8")
+      );
 
-      // if (data) {
-      //   const resFactura = this.recepcionFactura(
-      //     gzdata,
-      //     valores.fechaEmision,
-      //     hashArchivo
-      //   );
+      if (data) {
+        const resFactura = this.recepcionFactura(
+          gzdata,
+          valores.fechaEmision,
+          hashArchivo
+        );
 
-      //   res.status(200).json(resFactura);
-      // } else {
-      //   res.status(500).json({ error: "Error al insertar la factura" });
-      // }
+        res.status(200).json(resFactura);
+      } else {
+        res.status(500).json({ error: "Error al insertar la factura" });
+      }
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Error al emitir la factura" });
     }
   }
 
-  static async recepcionFactura(archivo, fechaEnvio, hashArchivo, session) {
+  static async recepcionFactura(archivo, fechaEnvio, hashArchivo) {
     const wsdl =
       "https://pilotosiatservicios.impuestos.gob.bo/v2/ServicioFacturacionCompraVenta?wsdl";
     const codigoAmbiente = 2;
@@ -301,8 +301,10 @@ class SiatController {
     const tipoFacturaDocumento = 1;
 
     // Simula la sesión de PHP
-    const cufd = session?.scufd || "defaultCufd";
-    const cuis = session?.scuis || "defaultCuis";
+    // const cufd = session?.scufd || "defaultCufd";
+    const cufd = 7777777777;
+    // const cuis = session?.scuis || "defaultCuis";
+    const cuis = 2020202020;
 
     const params = {
       SolicitudServicioRecepcionFactura: {
@@ -360,8 +362,14 @@ function formatoXml(temporal, xmlTemporal) {
 }
 
 async function agregarFirmaDigital(doc) {
-  const privateKey = fs.readFileSync("certs/privateKey.pem", "utf8");
-  const publicKey = fs.readFileSync("certs/publicKey.pem", "utf8");
+  const privateKey = fs.readFileSync(
+    "certs/privateKeyPan/clave_ANTONIA_COA_CARDONA.pem",
+    "utf8"
+  );
+  const publicKey = fs.readFileSync(
+    "certs/privateKeyPan/certificado_ANTONIA_COA_CARDONA.pem",
+    "utf8"
+  );
 
   // Canonicalizar el XML (sin espacios innecesarios, atributos ordenados, etc.)
   const canonicalXml = doc.end({ prettyPrint: false });
@@ -430,7 +438,26 @@ async function agregarFirmaDigital(doc) {
   };
 
   const signedXml = doc.ele(signatureNode).end({ prettyPrint: true });
-  return signedXml;
+
+  doc = create(signedXml);
+
+  const parentNode = doc
+    .find((n) => n.node.nodeName === "facturaElectronicaCompraVenta")
+    .find((n) => n.node.nodeName === "Signature")
+    .find((n) => n.node.nodeName === "SignedInfo")
+    .find((n) => n.node.nodeName === "Reference")
+    .find((n) => n.node.nodeName === "Transforms");
+
+  if (parentNode) {
+    parentNode.ele({
+      Transform: {
+        "@Algorithm":
+          "http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments",
+      },
+    });
+  }
+
+  return doc.end({ prettyPrint: true });
 }
 
 module.exports = SiatController;

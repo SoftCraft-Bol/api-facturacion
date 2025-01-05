@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<facturaComputarizadaCompraVenta xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaComputarizadaCompraVenta.xsd">
+<facturaElectronicaCompraVenta xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaElectronicaCompraVenta.xsd">
   <cabecera>
     <nitEmisor>5153610012</nitEmisor>
     <razonSocialEmisor>PRUEBA FACTURA</razonSocialEmisor>
@@ -52,16 +52,17 @@
       <Reference URI="">
         <Transforms>
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+          <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments"/>
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
-        <DigestValue>PX8d1zirDeINaacx7h1TVT39dZgEMqEux8RcfOEWtyI=</DigestValue>
+        <DigestValue>l3ID1yqrulBx7HlM4akTKpBG3X/oIXgNxMeS6OUZKz0=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>FuDeuSL9PgLLrw5HLV3qZFQOU8EOMvbVzfpkF4/GgMQxzoCmVNzdoqproWjDWdLaEyJsFv03r83WIdH2LRfZOL2eX4dxuKXiLHose46EoU9Jcy9OCF4fA4xyUxXO04uHUu9+3l0M3Ncaq+pOP6ZkgDMxxsLOvqKmIfrt2tAme7b6Du9cUAo4eZm9Z+kOmmb0A/7lnOlOZy1k3oGG1nwHhTWnOB7xV8btr9b5cO2ELY2JcqZmDSQcCfD74Ls+dXvQJqs1PeTupzDIO+l56dutaehLK2D+0EwIkhPLD40cHmBlhR9+HtHoFNDQnYnJrKP6wO1WV0J8ptHd5msdtdy2cg==</SignatureValue>
+    <SignatureValue>j/5Lvc2sEGmcsmzpNiZSQ5+3Zm5Gs9+W8vfN6hbyDTV/++Lo6D/XX57PtBvRKnGpyM3B/JcTdTVV/tgnH06/WS4gRvIbCi2jqYZ1MASjTO9JwCdj2rtEREExxUhiNKfDoYYZzOZiUkVo5s9jC9EIHR0U3gNCIOzA1gzwq2nv5kVqz5FRubq3hMFGc9vMkDJbschnGei8cT69VTImBhHQtH3A2LObJwPmZBAetcYko8Yaz5rrnxDRVC1U0PjJnT8dOeGEufES/9vRDRRnRwCUvmZYb2hkwGokYZMtplAC1RmnzVmz4fT2mr3XlukXD/YFYs6iOSoiZzeTzvOTtfiZcQ==</SignatureValue>
     <KeyInfo>
       <X509Data>
-        <X509Certificate>-----BEGIN RSA PUBLIC KEY-----MIIBCgKCAQEA7vzVy7Fbx+si4RVHPnM7x7otKpF0n9w7E7WRI07DxMZs7yyOAo5aeQc7EyA9LIcjl3hIl+zDaTkAVcz8gb7yRPwLlXHyZ01LdxDXz9KVDwJxNoWmGtU0pt6FdHoEdE9jQ79uA1P5zSZXjWz69+1g+psyoTZ+pgdlWgjkqIcF9rJYJsD/Kweczn8hGdp0SvzFXnbUROGsScD8xoN1kWlh6fZ08InASjlYoO0EXn1N9H2XEeTbroAVvNlySpZT4Tc/M7gsYu6XP/AhEqYYFZK1n+b+xsdND9Ea63DSD3Ng+kMiW7xJ+Ym0zSc2K0zOwY95NekGwGXB0+nqM6sNdrEw9QIDAQAB-----END RSA PUBLIC KEY-----</X509Certificate>
+        <X509Certificate>-----BEGIN CERTIFICATE-----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-----END CERTIFICATE-----</X509Certificate>
       </X509Data>
     </KeyInfo>
   </Signature>
-</facturaComputarizadaCompraVenta>
+</facturaElectronicaCompraVenta>
