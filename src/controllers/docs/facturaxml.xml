@@ -28,7 +28,7 @@
     <descuentoAdicional>0</descuentoAdicional>
     <codigoExcepcion>0</codigoExcepcion>
     <cafc xsi:nil="true"/>
-    <leyenda>Gracias por su compra.</leyenda>
+    <leyenda>Ley 421. Esta factuara contribuye al desarrollo del pais</leyenda>
     <usuario>jdoe</usuario>
     <codigoDocumentoSector>1</codigoDocumentoSector>
   </cabecera>
@@ -45,4 +45,23 @@
     <numeroSerie>4545454</numeroSerie>
     <numeroImei>159753</numeroImei>
   </detalle>
+  <Signature>
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+      <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
+        <DigestValue>PX8d1zirDeINaacx7h1TVT39dZgEMqEux8RcfOEWtyI=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>FuDeuSL9PgLLrw5HLV3qZFQOU8EOMvbVzfpkF4/GgMQxzoCmVNzdoqproWjDWdLaEyJsFv03r83WIdH2LRfZOL2eX4dxuKXiLHose46EoU9Jcy9OCF4fA4xyUxXO04uHUu9+3l0M3Ncaq+pOP6ZkgDMxxsLOvqKmIfrt2tAme7b6Du9cUAo4eZm9Z+kOmmb0A/7lnOlOZy1k3oGG1nwHhTWnOB7xV8btr9b5cO2ELY2JcqZmDSQcCfD74Ls+dXvQJqs1PeTupzDIO+l56dutaehLK2D+0EwIkhPLD40cHmBlhR9+HtHoFNDQnYnJrKP6wO1WV0J8ptHd5msdtdy2cg==</SignatureValue>
+    <KeyInfo>
+      <X509Data>
+        <X509Certificate>-----BEGIN RSA PUBLIC KEY-----MIIBCgKCAQEA7vzVy7Fbx+si4RVHPnM7x7otKpF0n9w7E7WRI07DxMZs7yyOAo5aeQc7EyA9LIcjl3hIl+zDaTkAVcz8gb7yRPwLlXHyZ01LdxDXz9KVDwJxNoWmGtU0pt6FdHoEdE9jQ79uA1P5zSZXjWz69+1g+psyoTZ+pgdlWgjkqIcF9rJYJsD/Kweczn8hGdp0SvzFXnbUROGsScD8xoN1kWlh6fZ08InASjlYoO0EXn1N9H2XEeTbroAVvNlySpZT4Tc/M7gsYu6XP/AhEqYYFZK1n+b+xsdND9Ea63DSD3Ng+kMiW7xJ+Ym0zSc2K0zOwY95NekGwGXB0+nqM6sNdrEw9QIDAQAB-----END RSA PUBLIC KEY-----</X509Certificate>
+      </X509Data>
+    </KeyInfo>
+  </Signature>
 </facturaComputarizadaCompraVenta>

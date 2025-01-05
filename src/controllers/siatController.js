@@ -238,7 +238,8 @@ class SiatController {
       formatoXml(temporal, xml);
 
       // Generar el XML
-      const xmlOutput = xml.end({ prettyPrint: true });
+      let xmlOutput = xml.end({ prettyPrint: true });
+      xmlOutput = await agregarFirmaDigital(xml);
 
       console.log(xmlOutput);
 
@@ -255,6 +256,7 @@ class SiatController {
         .update(fs.readFileSync(xmlPath))
         .digest("hex");
 
+        //ACA PONER LA LOGICA PARA INSERTAR EN LA BASE DE DATOS
       // const data = insertarFactura(
       //   req.body,
       //   idCliente,
@@ -268,17 +270,17 @@ class SiatController {
       //   fs.readFileSync(xmlPath, "utf8")
       // );
 
-      if (data) {
-        const resFactura = this.recepcionFactura(
-          gzdata,
-          valores.fechaEmision,
-          hashArchivo
-        );
+      // if (data) {
+      //   const resFactura = this.recepcionFactura(
+      //     gzdata,
+      //     valores.fechaEmision,
+      //     hashArchivo
+      //   );
 
-        res.status(200).json(resFactura);
-      } else {
-        res.status(500).json({ error: "Error al insertar la factura" });
-      }
+      //   res.status(200).json(resFactura);
+      // } else {
+      //   res.status(500).json({ error: "Error al insertar la factura" });
+      // }
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Error al emitir la factura" });
@@ -357,22 +359,78 @@ function formatoXml(temporal, xmlTemporal) {
   });
 }
 
-// function formatoXml(temporal, xmlTemporal) {
-//   const nsXsi = "http://www.w3.org/2001/XMLSchema-instance";
-//   temporal.forEach((item) => {
-//     Object.entries(item).forEach(([key, value]) => {
-//       if (Array.isArray(value)) {
-//         value.forEach((subItem) => {
-//           formatoXml([subItem], xmlTemporal.ele(key));
-//         });
-//       } else if (value === null || value === undefined) {
-//         const subNode = xmlTemporal.ele(key, "");
-//         subNode.att("xsi:nil", "true", nsXsi);
-//       } else {
-//         xmlTemporal.ele(key).ele(value);
-//       }
-//     });
-//   });
-// }
+async function agregarFirmaDigital(doc) {
+  const privateKey = fs.readFileSync("certs/privateKey.pem", "utf8");
+  const publicKey = fs.readFileSync("certs/publicKey.pem", "utf8");
+
+  // Canonicalizar el XML (sin espacios innecesarios, atributos ordenados, etc.)
+  const canonicalXml = doc.end({ prettyPrint: false });
+
+  // Generar HASH usando SHA256
+  const hash = crypto.createHash("sha256").update(canonicalXml).digest();
+
+  // Convertir el HASH a Base64
+  const digestValue = hash.toString("base64");
+
+  // Agregar las etiquetas de DigestValue
+  const signatureNode = {
+    Signature: {
+      SignedInfo: {
+        CanonicalizationMethod: {
+          "@Algorithm": "http://www.w3.org/TR/2001/REC-xml-c14n-20010315",
+        },
+        SignatureMethod: {
+          "@Algorithm": "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
+        },
+        Reference: {
+          "@URI": "",
+          Transforms: {
+            Transform: {
+              "@Algorithm":
+                "http://www.w3.org/2000/09/xmldsig#enveloped-signature",
+            },
+          },
+          DigestMethod: {
+            "@Algorithm": "http://www.w3.org/2001/04/xmlenc#sha256",
+          },
+          DigestValue: digestValue,
+        },
+      },
+    },
+  };
+
+  const signedInfoXml = create(signatureNode).end({
+    prettyPrint: false,
+  });
+
+  const signedInfoHash = crypto
+    .createHash("sha256")
+    .update(signedInfoXml)
+    .digest();
+
+  // Encriptar el HASH usando la llave privada (firma digital)
+  const signatureValue = crypto
+    .privateEncrypt(
+      {
+        key: privateKey,
+        padding: crypto.constants.RSA_PKCS1_PADDING,
+      },
+      signedInfoHash
+    )
+    .toString("base64");
+
+  // Agregar SignatureValue y X509Certificate
+  signatureNode.Signature.SignatureValue = signatureValue;
+  signatureNode.Signature.KeyInfo = {
+    X509Data: {
+      X509Certificate: publicKey
+        .replace(/-----\w+-----/g, "")
+        .replace(/\n/g, ""),
+    },
+  };
+
+  const signedXml = doc.ele(signatureNode).end({ prettyPrint: true });
+  return signedXml;
+}
 
 module.exports = SiatController;
