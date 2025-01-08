@@ -58,17 +58,123 @@ class SiatController {
     }
   }
 
+  static async cuis(req, res) {
+    const wsdl =
+      "https://pilotosiatservicios.impuestos.gob.bo/v2/FacturacionCodigos?wsdl";
+    const codigoAmbiente = 2;
+    const codigoModalidad = 1;
+    const codigoPuntoVenta = 0;
+    const codigoSistema = "814D65E61B6176FAB65842E";
+    const codigoSucursal = 0;
+    const nit = "3655579015";
+
+    const params = {
+      SolicitudCuis: {
+        codigoAmbiente,
+        codigoModalidad,
+        codigoPuntoVenta,
+        codigoSistema,
+        codigoSucursal,
+        nit,
+      },
+    };
+
+    const apiKey =
+      "TokenApi eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbnRvbmlhLmNvYUBob3RtYWlsLmNvbSIsImNvZGlnb1Npc3RlbWEiOiI4MTRENjVFNjFCNjE3NkZBQjY1ODQyRSIsIm5pdCI6Ikg0c0lBQUFBQUFBQUFETTJNelUxTmJjME1EUUZBRnRjQTNRS0FBQUEiLCJpZCI6NTIwNjE3OSwiZXhwIjoxNzY3Nzc4NTA2LCJpYXQiOjE3MzYyNTY4NzYsIm5pdERlbGVnYWRvIjozNjU1NTc5MDE1LCJzdWJzaXN0ZW1hIjoiU0ZFIn0.5gshN0R3ZkcvrT6TeI8U5dRou_2VvS4J32Ghg8wERvThv62WZzkG5-OJZaC3vI7clLdPgvg5ffSrM-g7JJ3bag";
+
+    try {
+      const client = await soap.createClientAsync(wsdl);
+      client.addHttpHeader("apikey", apiKey);
+
+      const result = await new Promise((resolve, reject) => {
+        client.cuis(params, (error, result) => {
+          if (error) {
+            return reject(error);
+          }
+          resolve(result);
+        });
+      });
+      res.status(200).json({ success: true, data: result });
+    } catch (error) {
+      console.error("Error:", error.message);
+      res.status(500).json({
+        success: false,
+        message: "TOKEN NO VÁLIDO",
+        error: error.message,
+      });
+    }
+  }
+
+  static async cufd(req, res) {
+    const wsdl =
+      "https://pilotosiatservicios.impuestos.gob.bo/v2/FacturacionCodigos?wsdl";
+    const codigoAmbiente = 2;
+    const codigoModalidad = 1;
+    const codigoPuntoVenta = 0;
+    const codigoSistema = "814D65E61B6176FAB65842E";
+    const codigoSucursal = 0;
+    const nit = "3655579015";
+
+    const cuis = req.body.cuis;
+
+    if (!cuis) {
+      return res.status(400).json({
+        success: false,
+        message: "El parámetro 'cuis' es obligatorio.",
+      });
+    }
+
+    const params = {
+      SolicitudCufd: {
+        codigoAmbiente,
+        codigoModalidad,
+        codigoPuntoVenta,
+        codigoSistema,
+        codigoSucursal,
+        cuis,
+        nit,
+      },
+    };
+
+    const apiKey =
+      "TokenApi eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbnRvbmlhLmNvYUBob3RtYWlsLmNvbSIsImNvZGlnb1Npc3RlbWEiOiI4MTRENjVFNjFCNjE3NkZBQjY1ODQyRSIsIm5pdCI6Ikg0c0lBQUFBQUFBQUFETTJNelUxTmJjME1EUUZBRnRjQTNRS0FBQUEiLCJpZCI6NTIwNjE3OSwiZXhwIjoxNzY3Nzc4NTA2LCJpYXQiOjE3MzYyNTY4NzYsIm5pdERlbGVnYWRvIjozNjU1NTc5MDE1LCJzdWJzaXN0ZW1hIjoiU0ZFIn0.5gshN0R3ZkcvrT6TeI8U5dRou_2VvS4J32Ghg8wERvThv62WZzkG5-OJZaC3vI7clLdPgvg5ffSrM-g7JJ3bag";
+
+    try {
+      const client = await soap.createClientAsync(wsdl);
+
+      client.addHttpHeader("apikey", apiKey);
+
+      const result = await new Promise((resolve, reject) => {
+        client.cufd(params, (error, result) => {
+          if (error) {
+            return reject(error);
+          }
+          resolve(result);
+        });
+      });
+
+      // Retornar respuesta al cliente
+      res.status(200).json({ success: true, data: result });
+    } catch (error) {
+      console.error("Error:", error.message);
+      res.status(500).json({
+        success: false,
+        message: "Error en la solicitud SOAP",
+        error: error.message,
+      });
+    }
+  }
+
   static async sincronizarListaProductosServicios(req, res) {
     const wsdl =
       "https://pilotosiatservicios.impuestos.gob.bo/v2/FacturacionSincronizacion?wsdl";
     const codigoAmbiente = 2;
-    const codigoPuntoVenta = 0;
-    const codigoSistema = "7252133BBD41148CB715337";
+    const codigoPuntoVenta = 1;
+    const codigoSistema = "814D65E61B6176FAB65842E";
     const codigoSucursal = 0;
-    const cuis = req.body.cuis; // Supuesto: viene del cuerpo de la solicitud
-    const nit = "5556875011";
+    const nit = "3655579015";
 
-    console.log("Hola mundo");
+    const cuis = req.body.cuis;
 
     const params = {
       SolicitudSincronizacion: {
@@ -81,23 +187,30 @@ class SiatController {
       },
     };
 
-    const options = {
-      wsdl_headers: {
-        apikey:
-          "TokenApi eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbnRvbmlhLmNvYUBob3RtYWlsLmNvbSIsImNvZGlnb1Npc3RlbWEiOiI3MjUyMTMzQkJENDExNDhDQjcxNTMzNyIsIm5pdCI6Ikg0c0lBQUFBQUFBQUFETTJNelUxTmJjME1EUUZBRnRjQTNRS0FBQUEiLCJpZCI6NTIwNjE3OSwiZXhwIjoxNzY3MTI1OTgyLCJpYXQiOjE3MzU2MDQzNTIsIm5pdERlbGVnYWRvIjo1NTU2ODc1MDExLCJzdWJzaXN0ZW1hIjoiU0ZFIn0.9vTqKQ6zvVQeLgMQDflNeZtLZyeVTraYx7KrH3N4tOhWqrA5ViHI3J6t7fI8TV_Q20kDwB5aCeJ5CazgZ5t23w",
-      },
-      timeout: 5000,
-    };
+    const apiKey =
+      "TokenApi eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbnRvbmlhLmNvYUBob3RtYWlsLmNvbSIsImNvZGlnb1Npc3RlbWEiOiI4MTRENjVFNjFCNjE3NkZBQjY1ODQyRSIsIm5pdCI6Ikg0c0lBQUFBQUFBQUFETTJNelUxTmJjME1EUUZBRnRjQTNRS0FBQUEiLCJpZCI6NTIwNjE3OSwiZXhwIjoxNzY3Nzc4NTA2LCJpYXQiOjE3MzYyNTY4NzYsIm5pdERlbGVnYWRvIjozNjU1NTc5MDE1LCJzdWJzaXN0ZW1hIjoiU0ZFIn0.5gshN0R3ZkcvrT6TeI8U5dRou_2VvS4J32Ghg8wERvThv62WZzkG5-OJZaC3vI7clLdPgvg5ffSrM-g7JJ3bag";
 
     try {
-      const client = await soap.createClientAsync(wsdl, options);
-      const [result] = await client.sincronizarListaProductosServiciosAsync(
-        params
-      );
-      res.json(result);
+      const client = await soap.createClientAsync(wsdl);
+
+      client.addHttpHeader("apikey", apiKey);
+      const result = await new Promise((resolve, reject) => {
+        client.sincronizarListaProductosServicios(params, (error, result) => {
+          if (error) {
+            return reject(error);
+          }
+          resolve(result);
+        });
+      });
+
+      res.status(200).json({ success: true, data: result });
     } catch (error) {
-      console.error("Error en la sincronización:", error.message);
-      res.status(500).send("TOKEN NO VÁLIDO");
+      console.error("Error:", error.message);
+      res.status(500).json({
+        success: false,
+        message: "Error en la solicitud SOAP",
+        error: error.message,
+      });
     }
   }
 
@@ -106,10 +219,11 @@ class SiatController {
       "https://pilotosiatservicios.impuestos.gob.bo/v2/FacturacionSincronizacion?wsdl";
     const codigoAmbiente = 2;
     const codigoPuntoVenta = 0;
-    const codigoSistema = "77535546B712DD409D7A387";
+    const codigoSistema = "814D65E61B6176FAB65842E";
     const codigoSucursal = 0;
-    const cuis = req.body.cuis; // Suponemos que el 'cuis' viene en el cuerpo de la solicitud
-    const nit = "5153610012";
+    const nit = "3655579015";
+
+    const cuis = req.body.cuis;
 
     const params = {
       SolicitudSincronizacion: {
@@ -122,24 +236,180 @@ class SiatController {
       },
     };
 
-    const options = {
-      wsdl_headers: {
-        apikey:
-          "TokenApi eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJHdWljaGkxLiIsImNvZGlnb1Npc3RlbWEiOiI3NzUzNTU0NkI3MTJERDQwOUQ3QTM4NyIsIm5pdCI6Ikg0c0lBQUFBQUFBQUFETTFORFUyTXpRd01EUUNBTWdwRkpRS0FBQUEiLCJpZCI6MzAxNTc4OCwiZXhwIjoxNzAzOTgwODAwLCJpYXQiOjE2OTE2MDMxMzIsIm5pdERlbGVnYWRvIjo1MTUzNjEwMDEyLCJzdWJzaXN0ZW1hIjoiU0ZFIn0.Y61q9_pZiOG49HYRQ5OfXRHvDCh1V8hoviWuA472DgV5f3CdV-MOxz9y4u07AVB-bMByebK_wskxUWXf6cliQQ",
-      },
-      timeout: 5000,
-    };
+    const apiKey =
+      "TokenApi eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbnRvbmlhLmNvYUBob3RtYWlsLmNvbSIsImNvZGlnb1Npc3RlbWEiOiI4MTRENjVFNjFCNjE3NkZBQjY1ODQyRSIsIm5pdCI6Ikg0c0lBQUFBQUFBQUFETTJNelUxTmJjME1EUUZBRnRjQTNRS0FBQUEiLCJpZCI6NTIwNjE3OSwiZXhwIjoxNzY3Nzc4NTA2LCJpYXQiOjE3MzYyNTY4NzYsIm5pdERlbGVnYWRvIjozNjU1NTc5MDE1LCJzdWJzaXN0ZW1hIjoiU0ZFIn0.5gshN0R3ZkcvrT6TeI8U5dRou_2VvS4J32Ghg8wERvThv62WZzkG5-OJZaC3vI7clLdPgvg5ffSrM-g7JJ3bag";
 
     try {
-      const client = await soap.createClientAsync(wsdl, options);
-      const [result] = await client.sincronizarListaLeyendasFacturaAsync(
-        params
-      );
-      console.log(result);
-      res.json(result);
+      const client = await soap.createClientAsync(wsdl);
+
+      client.addHttpHeader("apikey", apiKey);
+      const result = await new Promise((resolve, reject) => {
+        client.sincronizarListaLeyendasFactura(params, (error, result) => {
+          if (error) {
+            return reject(error);
+          }
+          resolve(result);
+        });
+      });
+
+      res.status(200).json({ success: true, data: result });
     } catch (error) {
-      console.error("Error en la sincronización:", error.message);
-      res.status(500).send("TOKEN NO VÁLIDO");
+      console.error("Error:", error.message);
+      res.status(500).json({
+        success: false,
+        message: "Error en la solicitud SOAP",
+        error: error.message,
+      });
+    }
+  }
+
+  static async sincronizarActividades(req, res) {
+    const wsdl =
+      "https://pilotosiatservicios.impuestos.gob.bo/v2/FacturacionSincronizacion?wsdl";
+    const codigoAmbiente = 2;
+    const codigoPuntoVenta = 0;
+    const codigoSistema = "814D65E61B6176FAB65842E";
+    const codigoSucursal = 0;
+    const nit = "3655579015";
+
+    const cuis = req.body.cuis;
+
+    const params = {
+      SolicitudSincronizacion: {
+        codigoAmbiente,
+        codigoPuntoVenta,
+        codigoSistema,
+        codigoSucursal,
+        cuis,
+        nit,
+      },
+    };
+
+    const apiKey =
+      "TokenApi eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbnRvbmlhLmNvYUBob3RtYWlsLmNvbSIsImNvZGlnb1Npc3RlbWEiOiI4MTRENjVFNjFCNjE3NkZBQjY1ODQyRSIsIm5pdCI6Ikg0c0lBQUFBQUFBQUFETTJNelUxTmJjME1EUUZBRnRjQTNRS0FBQUEiLCJpZCI6NTIwNjE3OSwiZXhwIjoxNzY3Nzc4NTA2LCJpYXQiOjE3MzYyNTY4NzYsIm5pdERlbGVnYWRvIjozNjU1NTc5MDE1LCJzdWJzaXN0ZW1hIjoiU0ZFIn0.5gshN0R3ZkcvrT6TeI8U5dRou_2VvS4J32Ghg8wERvThv62WZzkG5-OJZaC3vI7clLdPgvg5ffSrM-g7JJ3bag";
+
+    try {
+      const client = await soap.createClientAsync(wsdl);
+
+      client.addHttpHeader("apikey", apiKey);
+      const result = await new Promise((resolve, reject) => {
+        client.sincronizarActividades(params, (error, result) => {
+          if (error) {
+            return reject(error);
+          }
+          resolve(result);
+        });
+      });
+
+      res.status(200).json({ success: true, data: result });
+    } catch (error) {
+      console.error("Error:", error.message);
+      res.status(500).json({
+        success: false,
+        message: "Error en la solicitud SOAP",
+        error: error.message,
+      });
+    }
+  }
+
+  static async sincronizarFechaHora(req, res) {
+    const wsdl =
+      "https://pilotosiatservicios.impuestos.gob.bo/v2/FacturacionSincronizacion?wsdl";
+    const codigoAmbiente = 2;
+    const codigoPuntoVenta = 0;
+    const codigoSistema = "814D65E61B6176FAB65842E";
+    const codigoSucursal = 0;
+    const nit = "3655579015";
+
+    const cuis = req.body.cuis;
+
+    const params = {
+      SolicitudSincronizacion: {
+        codigoAmbiente,
+        codigoPuntoVenta,
+        codigoSistema,
+        codigoSucursal,
+        cuis,
+        nit,
+      },
+    };
+
+    const apiKey =
+      "TokenApi eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbnRvbmlhLmNvYUBob3RtYWlsLmNvbSIsImNvZGlnb1Npc3RlbWEiOiI4MTRENjVFNjFCNjE3NkZBQjY1ODQyRSIsIm5pdCI6Ikg0c0lBQUFBQUFBQUFETTJNelUxTmJjME1EUUZBRnRjQTNRS0FBQUEiLCJpZCI6NTIwNjE3OSwiZXhwIjoxNzY3Nzc4NTA2LCJpYXQiOjE3MzYyNTY4NzYsIm5pdERlbGVnYWRvIjozNjU1NTc5MDE1LCJzdWJzaXN0ZW1hIjoiU0ZFIn0.5gshN0R3ZkcvrT6TeI8U5dRou_2VvS4J32Ghg8wERvThv62WZzkG5-OJZaC3vI7clLdPgvg5ffSrM-g7JJ3bag";
+
+    try {
+      const client = await soap.createClientAsync(wsdl);
+
+      client.addHttpHeader("apikey", apiKey);
+      const result = await new Promise((resolve, reject) => {
+        client.sincronizarFechaHora(params, (error, result) => {
+          if (error) {
+            return reject(error);
+          }
+          resolve(result);
+        });
+      });
+
+      res.status(200).json({ success: true, data: result });
+    } catch (error) {
+      console.error("Error:", error.message);
+      res.status(500).json({
+        success: false,
+        message: "Error en la solicitud SOAP",
+        error: error.message,
+      });
+    }
+  }
+
+  static async sincronizarParametricaTipoDocumentoSector(req, res) {
+    const wsdl =
+      "https://pilotosiatservicios.impuestos.gob.bo/v2/FacturacionSincronizacion?wsdl";
+    const codigoAmbiente = 2;
+    const codigoPuntoVenta = 0;
+    const codigoSistema = "814D65E61B6176FAB65842E";
+    const codigoSucursal = 0;
+    const nit = "3655579015";
+
+    const cuis = req.body.cuis;
+
+    const params = {
+      SolicitudSincronizacion: {
+        codigoAmbiente,
+        codigoPuntoVenta,
+        codigoSistema,
+        codigoSucursal,
+        cuis,
+        nit,
+      },
+    };
+
+    const apiKey =
+      "TokenApi eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbnRvbmlhLmNvYUBob3RtYWlsLmNvbSIsImNvZGlnb1Npc3RlbWEiOiI4MTRENjVFNjFCNjE3NkZBQjY1ODQyRSIsIm5pdCI6Ikg0c0lBQUFBQUFBQUFETTJNelUxTmJjME1EUUZBRnRjQTNRS0FBQUEiLCJpZCI6NTIwNjE3OSwiZXhwIjoxNzY3Nzc4NTA2LCJpYXQiOjE3MzYyNTY4NzYsIm5pdERlbGVnYWRvIjozNjU1NTc5MDE1LCJzdWJzaXN0ZW1hIjoiU0ZFIn0.5gshN0R3ZkcvrT6TeI8U5dRou_2VvS4J32Ghg8wERvThv62WZzkG5-OJZaC3vI7clLdPgvg5ffSrM-g7JJ3bag";
+
+    try {
+      const client = await soap.createClientAsync(wsdl);
+
+      client.addHttpHeader("apikey", apiKey);
+      const result = await new Promise((resolve, reject) => {
+        client.sincronizarParametricaTipoDocumentoSector(
+          params,
+          (error, result) => {
+            if (error) {
+              return reject(error);
+            }
+            resolve(result);
+          }
+        );
+      });
+
+      res.status(200).json({ success: true, data: result });
+    } catch (error) {
+      console.error("Error:", error.message);
+      res.status(500).json({
+        success: false,
+        message: "Error en la solicitud SOAP",
+        error: error.message,
+      });
     }
   }
 
@@ -188,21 +458,22 @@ class SiatController {
     try {
       const datos = req.body.factura;
       const idCliente = req.body.id_cliente;
-
-      console.log(datos);
-
+      var tzoffset = new Date().getTimezoneOffset() * 60000;
+      datos[0].cabecera.fechaEmision = new Date(Date.now() - tzoffset)
+        .toISOString()
+        .slice(0, -1);
       const valores = datos[0].cabecera;
       const nitEmisor = valores.nitEmisor.toString().padStart(13, "0");
       let fechaEmision = valores.fechaEmision.replace(/[-T:.]/g, "");
       const sucursal = "0".padStart(4, "0");
-      const modalidad = 2;
+      const modalidad = 1;
       const tipoEmision = 1;
       const tipoFactura = 1;
       const tipoDocSector = "1".padStart(2, "0");
       const numeroFactura = valores.numeroFactura.toString().padStart(10, "0");
       const puntoVenta = "0".padStart(4, "0");
       //const codigoControl = req.session.scodigoControl; // Asume que estás usando un middleware de sesión
-      const codigoControl = 123213; // Asume que estás usando un middleware de sesión
+      const codigoControl = "0EE8198E7D51F74"; // Asume que estás usando un middleware de sesión
       const cadena = `${nitEmisor}${fechaEmision}${sucursal}${modalidad}${tipoEmision}${tipoFactura}${tipoDocSector}${numeroFactura}${puntoVenta}`;
 
       const wsdl = "https://indexingenieria.com/webservices/wssiatcuf.php?wsdl";
@@ -238,7 +509,6 @@ class SiatController {
 
       formatoXml(temporal, xml);
 
-      // Generar el XML
       let xmlOutput = xml.end({ prettyPrint: true });
       xmlOutput = await agregarFirmaDigital(xml);
 
@@ -257,91 +527,38 @@ class SiatController {
         .update(fs.readFileSync(xmlPath))
         .digest("hex");
 
-      const data = insertarFactura(
-        req.body,
-        idCliente,
-        numeroFactura,
-        cuf,
+      //Para insertar en la base de datos
+      // const data = insertarFactura(
+      //   req.body,
+      //   idCliente,
+      //   numeroFactura,
+      //   cuf,
+      //   valores.fechaEmision,
+      //   valores.codigoMetodoPago,
+      //   valores.montoTotal,
+      //   valores.montoTotalSujetoIva,
+      //   valores.descuentoAdicional,
+      //   fs.readFileSync(xmlPath, "utf8")
+      // );
+
+      console.log(hashArchivo);
+      console.log(valores.fechaEmision);
+
+      const resFactura = recepcionFactura(
+        gzdata,
         valores.fechaEmision,
-        valores.codigoMetodoPago,
-        valores.montoTotal,
-        valores.montoTotalSujetoIva,
-        valores.descuentoAdicional,
-        fs.readFileSync(xmlPath, "utf8")
+        hashArchivo
       );
 
-      if (data) {
-        const resFactura = this.recepcionFactura(
-          gzdata,
-          valores.fechaEmision,
-          hashArchivo
-        );
-
-        res.status(200).json(resFactura);
-      } else {
-        res.status(500).json({ error: "Error al insertar la factura" });
-      }
+      res.status(200).json(resFactura);
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Error al emitir la factura" });
     }
   }
-
-  static async recepcionFactura(archivo, fechaEnvio, hashArchivo) {
-    const wsdl =
-      "https://pilotosiatservicios.impuestos.gob.bo/v2/ServicioFacturacionCompraVenta?wsdl";
-    const codigoAmbiente = 2;
-    const codigoDocumentoSector = 1;
-    const codigoEmision = 1;
-    const codigoModalidad = 2;
-    const codigoPuntoVenta = 0;
-    const codigoSistema = "77535546B712DD409D7A387";
-    const codigoSucursal = 0;
-    const nit = "5153610012";
-    const tipoFacturaDocumento = 1;
-
-    // Simula la sesión de PHP
-    // const cufd = session?.scufd || "defaultCufd";
-    const cufd = 7777777777;
-    // const cuis = session?.scuis || "defaultCuis";
-    const cuis = 2020202020;
-
-    const params = {
-      SolicitudServicioRecepcionFactura: {
-        codigoAmbiente,
-        codigoDocumentoSector,
-        codigoEmision,
-        codigoModalidad,
-        codigoPuntoVenta,
-        codigoSistema,
-        codigoSucursal,
-        cufd,
-        cuis,
-        nit,
-        tipoFacturaDocumento,
-        archivo,
-        fechaEnvio,
-        hashArchivo,
-      },
-    };
-
-    const headers = {
-      apikey:
-        "TokenApi eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJHdWljaGkxLiIsImNvZGlnb1Npc3RlbWEiOiI3NzUzNTU0NkI3MTJERDQwOUQ3QTM4NyIsIm5pdCI6Ikg0c0lBQUFBQUFBQUFETTFORFUyTXpRd01EUUNBTWdwRkpRS0FBQUEiLCJpZCI6MzAxNTc4OCwiZXhwIjoxNzAzOTgwODAwLCJpYXQiOjE2OTE2MDMxMzIsIm5pdERlbGVnYWRvIjo1MTUzNjEwMDEyLCJzdWJzaXN0ZW1hIjoiU0ZFIn0.Y61q9_pZiOG49HYRQ5OfXRHvDCh1V8hoviWuA472DgV5f3CdV-MOxz9y4u07AVB-bMByebK_wskxUWXf6cliQQ",
-    };
-
-    try {
-      const response = await axios.post(wsdl, params, { headers });
-      return response.data;
-    } catch (error) {
-      console.error("Error:", error.message);
-      return "TOKEN NO VÁLIDO";
-    }
-  }
 }
 
 function formatoXml(temporal, xmlTemporal) {
-  const nsXsi = "http://www.w3.org/2001/XMLSchema-instance";
   temporal.forEach((item) => {
     Object.entries(item).forEach(([key, value]) => {
       if (typeof value === "object" && !Array.isArray(value) && value != null)
@@ -362,6 +579,7 @@ function formatoXml(temporal, xmlTemporal) {
 }
 
 async function agregarFirmaDigital(doc) {
+  const xsi = "http://www.w3.org/2001/XMLSchema-instance";
   const privateKey = fs.readFileSync(
     "certs/privateKeyPan/clave_ANTONIA_COA_CARDONA.pem",
     "utf8"
@@ -383,6 +601,7 @@ async function agregarFirmaDigital(doc) {
   // Agregar las etiquetas de DigestValue
   const signatureNode = {
     Signature: {
+      "@xmlns": "http://www.w3.org/2000/09/xmldsig#",
       SignedInfo: {
         CanonicalizationMethod: {
           "@Algorithm": "http://www.w3.org/TR/2001/REC-xml-c14n-20010315",
@@ -458,6 +677,67 @@ async function agregarFirmaDigital(doc) {
   }
 
   return doc.end({ prettyPrint: true });
+}
+
+async function recepcionFactura(archivo, fechaEnvio, hashArchivo) {
+  const wsdl =
+    "https://pilotosiatservicios.impuestos.gob.bo/v2/ServicioFacturacionCompraVenta?wsdl";
+
+  const codigoAmbiente = 2;
+  const codigoDocumentoSector = 1;
+  const codigoEmision = 1;
+  const codigoModalidad = 1;
+  const codigoPuntoVenta = 0;
+  const codigoSistema = "814D65E61B6176FAB65842E";
+  const codigoSucursal = 0;
+  const nit = "3655579015";
+  const tipoFacturaDocumento = 1;
+
+  // Simula la sesión de PHP
+  // const cufd = session?.scufd || "defaultCufd";
+  const cufd = "BQXlCKzQlREE=ODzZGQUI2NTg0MkU=QkFQWGtVSUJaVUFE0RDY1RTYxQjYxN";
+  // const cuis = session?.scuis || "defaultCuis";
+  const cuis = "41A4F2FF";
+
+  const params = {
+    SolicitudServicioRecepcionFactura: {
+      codigoAmbiente,
+      codigoDocumentoSector,
+      codigoEmision,
+      codigoModalidad,
+      codigoPuntoVenta,
+      codigoSistema,
+      codigoSucursal,
+      cufd,
+      cuis,
+      nit,
+      tipoFacturaDocumento,
+      archivo,
+      fechaEnvio,
+      hashArchivo,
+    },
+  };
+
+  const apiKey =
+    "TokenApi eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbnRvbmlhLmNvYUBob3RtYWlsLmNvbSIsImNvZGlnb1Npc3RlbWEiOiI4MTRENjVFNjFCNjE3NkZBQjY1ODQyRSIsIm5pdCI6Ikg0c0lBQUFBQUFBQUFETTJNelUxTmJjME1EUUZBRnRjQTNRS0FBQUEiLCJpZCI6NTIwNjE3OSwiZXhwIjoxNzY3Nzc4NTA2LCJpYXQiOjE3MzYyNTY4NzYsIm5pdERlbGVnYWRvIjozNjU1NTc5MDE1LCJzdWJzaXN0ZW1hIjoiU0ZFIn0.5gshN0R3ZkcvrT6TeI8U5dRou_2VvS4J32Ghg8wERvThv62WZzkG5-OJZaC3vI7clLdPgvg5ffSrM-g7JJ3bag";
+
+  try {
+    const client = await soap.createClientAsync(wsdl);
+
+    client.addHttpHeader("apikey", apiKey);
+    const result = await new Promise((resolve, reject) => {
+      client.recepcionFactura(params, (error, result) => {
+        if (error) {
+          return reject(error);
+        }
+        resolve(result);
+      });
+    });
+    return result;
+  } catch (error) {
+    console.error("Error:", error.message);
+    return "TOKEN NO VÁLIDO";
+  }
 }
 
 module.exports = SiatController;

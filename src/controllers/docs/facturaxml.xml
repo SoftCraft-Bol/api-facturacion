@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <facturaElectronicaCompraVenta xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="facturaElectronicaCompraVenta.xsd">
   <cabecera>
-    <nitEmisor>5153610012</nitEmisor>
-    <razonSocialEmisor>PRUEBA FACTURA</razonSocialEmisor>
+    <nitEmisor>3655579015</nitEmisor>
+    <razonSocialEmisor>Pasteleria SRL</razonSocialEmisor>
     <municipio>Cochabamba</municipio>
     <telefono>77490451</telefono>
     <numeroFactura>1</numeroFactura>
-    <cuf>1609FD28BF14E16C75EFA21F930663099BAF28606A2123213</cuf>
-    <cufd>ABCDEF12345678901234567890123456</cufd>
+    <cuf>FA1FF73B92C2A0F9109A41A70F18854DE2258606A10EE8198E7D51F74</cuf>
+    <cufd>BQXlCKzQlREE=ODzZGQUI2NTg0MkU=QkFQWGtVSUJaVUFE0RDY1RTYxQjYxN</cufd>
     <codigoSucursal>0</codigoSucursal>
     <direccion>Av. Siempre Viva Nro. 123</direccion>
     <codigoPuntoVenta>0</codigoPuntoVenta>
-    <fechaEmision>2025-01-02T12:34:56.789</fechaEmision>
+    <fechaEmision>2025-01-07T23:47:14.984</fechaEmision>
     <nombreRazonSocial>Juan Pérez</nombreRazonSocial>
     <codigoTipoDocumentoIdentidad>1</codigoTipoDocumentoIdentidad>
     <numeroDocumento>12345678</numeroDocumento>
@@ -19,33 +19,33 @@
     <codigoCliente>12345678</codigoCliente>
     <codigoMetodoPago>1</codigoMetodoPago>
     <numeroTarjeta xsi:nil="true"/>
-    <montoTotal>150.5</montoTotal>
-    <montoTotalSujetoIva>150.5</montoTotalSujetoIva>
+    <montoTotal>20.5</montoTotal>
+    <montoTotalSujetoIva>20.5</montoTotalSujetoIva>
     <codigoMoneda>1</codigoMoneda>
     <tipoCambio>1</tipoCambio>
-    <montoTotalMoneda>150.5</montoTotalMoneda>
+    <montoTotalMoneda>20.5</montoTotalMoneda>
     <montoGiftCard xsi:nil="true"/>
     <descuentoAdicional>0</descuentoAdicional>
     <codigoExcepcion>0</codigoExcepcion>
     <cafc xsi:nil="true"/>
-    <leyenda>Ley 421. Esta factuara contribuye al desarrollo del pais</leyenda>
-    <usuario>jdoe</usuario>
+    <leyenda>Ley N° 453: El proveedor de servicios debe habilitar medios e instrumentos para efectuar consultas y reclamaciones</leyenda>
+    <usuario>Vendedor</usuario>
     <codigoDocumentoSector>1</codigoDocumentoSector>
   </cabecera>
   <detalle>
     <actividadEconomica>545454</actividadEconomica>
-    <codigoProductoSin>4545454</codigoProductoSin>
-    <codigoProducto>com1</codigoProducto>
-    <descripcion>Producto A</descripcion>
-    <cantidad>2</cantidad>
-    <unidadMedida>75</unidadMedida>
-    <precioUnitario>150.5</precioUnitario>
+    <codigoProductoSin>82210</codigoProductoSin>
+    <codigoProducto>COM01</codigoProducto>
+    <descripcion>Rebanada de torta de chocolocate</descripcion>
+    <cantidad>1</cantidad>
+    <unidadMedida>Unid.</unidadMedida>
+    <precioUnitario>20.5</precioUnitario>
     <montoDescuento>0</montoDescuento>
-    <subTotal>4000</subTotal>
+    <subTotal>20.5</subTotal>
     <numeroSerie>4545454</numeroSerie>
     <numeroImei>159753</numeroImei>
   </detalle>
-  <Signature>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
       <SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
@@ -55,10 +55,10 @@
           <Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315#WithComments"/>
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/>
-        <DigestValue>l3ID1yqrulBx7HlM4akTKpBG3X/oIXgNxMeS6OUZKz0=</DigestValue>
+        <DigestValue>c+53iDUJcMf3LOnmWca8cjpRep0NeWMcrQUZttLaBTU=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>j/5Lvc2sEGmcsmzpNiZSQ5+3Zm5Gs9+W8vfN6hbyDTV/++Lo6D/XX57PtBvRKnGpyM3B/JcTdTVV/tgnH06/WS4gRvIbCi2jqYZ1MASjTO9JwCdj2rtEREExxUhiNKfDoYYZzOZiUkVo5s9jC9EIHR0U3gNCIOzA1gzwq2nv5kVqz5FRubq3hMFGc9vMkDJbschnGei8cT69VTImBhHQtH3A2LObJwPmZBAetcYko8Yaz5rrnxDRVC1U0PjJnT8dOeGEufES/9vRDRRnRwCUvmZYb2hkwGokYZMtplAC1RmnzVmz4fT2mr3XlukXD/YFYs6iOSoiZzeTzvOTtfiZcQ==</SignatureValue>
+    <SignatureValue>Zh3GVIpGsRkwtqusSs9SuzYum7MdwVAdVq6wFM7yzWHP82wsI8mgjtboVEONDhJY3AdZGwWGAVQsZdln//k7dxfCj6hOPGYuqefHvYs1dFof5xKAnbXSVlEiavPAujgENha0+fheNiaVx08ZWXqVkmK7KlNhyxZ9J/M8XeziXcSP832jVJfo5J7YiFJI4SA/saQE8Sa19t11VAM1wjVBaXekuB9juncTsNYu1YAfX7NgbW3SPGDRg4YiwPN3PMGBS/escK7BDNIrLc8cEYJdSe5otuT0dYS/kfQL94z0L1i3V2U2wtgZeBju9kgG9AO+b0rqf2nuO+OS+GUBZoBREw==</SignatureValue>
     <KeyInfo>
       <X509Data>
         <X509Certificate>-----BEGIN CERTIFICATE-----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-----END CERTIFICATE-----</X509Certificate>
