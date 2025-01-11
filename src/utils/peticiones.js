@@ -1,6 +1,5 @@
 const realizarPeticiones = async () => {
-  const url =
-    "http://localhost:3000/api/siat/sincronizar-parametricaMotivoAnulacion";
+  const url = "http://localhost:3000/api/siat/cufd";
 
   for (let i = 0; i < 50; i++) {
     try {

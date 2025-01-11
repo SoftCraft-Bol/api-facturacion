@@ -36,10 +36,44 @@ router.post(
   "/sincronizar-parametricaMotivoAnulacion",
   SiatController.sincronizarParametricaMotivoAnulacion
 );
-router.get(
-  "/sincronizar-unidad-medida",
+router.post(
+  "/sincronizar-parametricaPaisOrigen",
+  SiatController.sincronizarParametricaPaisOrigen
+);
+router.post(
+  "/sincronizar-parametricaTipoEmision",
+  SiatController.sincronizarParametricaTipoEmision
+);
+router.post(
+  "/sincronizar-parametricaTipoHabitacion",
+  SiatController.sincronizarParametricaTipoHabitacion
+);
+router.post(
+  "/sincronizar-parametricaTipoMetodoPago",
+  SiatController.sincronizarParametricaTipoMetodoPago
+);
+router.post(
+  "/sincronizar-parametricaTipoMoneda",
+  SiatController.sincronizarParametricaTipoMoneda
+);
+router.post(
+  "/sincronizar-parametricaTipoPuntoVenta",
+  SiatController.sincronizarParametricaTipoPuntoVenta
+);
+router.post(
+  "/sincronizar-parametricaTiposFactura",
+  SiatController.sincronizarParametricaTiposFactura
+);
+
+router.post(
+  "/sincronizar-parametricaUnidadMedida",
   SiatController.sincronizarParametricaUnidadMedida
 );
+router.post(
+  "/sincronizar-parametricaTipoDocumentoIdentidad",
+  SiatController.sincronizarParametricaTipoDocumentoIdentidad
+);
+
 router.post("/emitirFactura", SiatController.emitirFactura);
 router.get("/cuis", SiatController.cuis);
 router.post("/cufd", SiatController.cufd);
