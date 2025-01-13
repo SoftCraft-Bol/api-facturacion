@@ -64,14 +64,18 @@ router.post(
   "/sincronizar-parametricaTiposFactura",
   SiatController.sincronizarParametricaTiposFactura
 );
+router.post(
+  "/sincronizar-parametricaTipoDocumentoIdentidad",
+  SiatController.sincronizarParametricaTipoDocumentoIdentidad
+);
 
 router.post(
   "/sincronizar-parametricaUnidadMedida",
   SiatController.sincronizarParametricaUnidadMedida
 );
 router.post(
-  "/sincronizar-parametricaTipoDocumentoIdentidad",
-  SiatController.sincronizarParametricaTipoDocumentoIdentidad
+  "/registroEventoSignificativo",
+  SiatController.registroEventoSignificativo
 );
 
 router.post("/emitirFactura", SiatController.emitirFactura);
