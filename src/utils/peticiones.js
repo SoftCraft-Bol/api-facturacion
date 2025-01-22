@@ -22,7 +22,7 @@ const realizarPeticiones = async () => {
     } catch (error) {
       console.error(`Error en la iteración ${i + 1}:`, error);
     }
-  }
+  }//cambios
 };
 
 module.exports = { realizarPeticiones };
