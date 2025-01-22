@@ -1,9 +1,8 @@
 const express = require("express");
-const { emitir } = require("../controllers/facturaController");
 const SiatController = require("../controllers/siatController");
 
 const router = express.Router();
 
-router.post("/emitir", emitir);
+router.post("/emitir", SiatController.emitirFactura);
 
 module.exports = router;
