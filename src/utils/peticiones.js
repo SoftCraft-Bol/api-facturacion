@@ -1,5 +1,5 @@
 const realizarPeticiones = async () => {
-  const url = "http://localhost:3000/api/siat/cufd";
+  const url = "http://localhost:3000/api/siat/sincronizar-actividades";
 
   for (let i = 0; i < 50; i++) {
     try {
