@@ -114,7 +114,7 @@ class SiatController {
     const wsdl =
       "https://pilotosiatservicios.impuestos.gob.bo/v2/FacturacionSincronizacion?wsdl";
     const codigoAmbiente = 2;
-    const codigoPuntoVenta = 1;
+    const codigoPuntoVenta = 0;
     const codigoSistema = "814D65E61B6176FAB65842E";
     const codigoSucursal = 0;
     const nit = "3655579015";
@@ -1004,7 +1004,7 @@ class SiatController {
       const tipoDocSector = "1".padStart(2, "0");
       const numeroFactura = valores.numeroFactura.toString().padStart(10, "0");
       const puntoVenta = "0".padStart(4, "0");
-      const codigoControl = "8EA52775AE51F74";
+      const codigoControl = "0B861496F061F74";
       const cadena = `${nitEmisor}${fechaEmision}${sucursal}${modalidad}${tipoEmision}${tipoFactura}${tipoDocSector}${numeroFactura}${puntoVenta}`;
 
       const wsdl = "https://indexingenieria.com/webservices/wssiatcuf.php?wsdl";
@@ -1019,7 +1019,7 @@ class SiatController {
 
       const cuf = await client.generaCufAsync(params);
 
-      datos[0].cabecera.cuf = cuf[0].dato["$value"];
+      datos[0].cabecera.cuf = "FA1FF73B92C2A3D6BFE4AEFFEDE59082D8D5E8CB450B861496F061F74";
 
       const xmlTemporal = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
       <facturaComputarizadaCompraVenta xsi:noNamespaceSchemaLocation="facturaComputarizadaCompraVenta.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"></facturaComputarizadaCompraVenta>`;
@@ -1044,11 +1044,10 @@ class SiatController {
       let xmlOutput = xml.end({ prettyPrint: true });
       xmlOutput = await agregarFirmaDigital(xml);
 
-      const xmlPath = path.join(__dirname, "docs", "facturaxml.xml");
-      const zipPath = path.join(__dirname, "docs", "facturaxml.xml.zip");
+      const xmlPath = path.join(__dirname, "docs", "facturaxml_signed.xml");
+      const zipPath = path.join(__dirname, "docs", "facturaxml_signed.xml.zip");
 
-      fs.writeFileSync(xmlPath, xmlOutput);
-
+      // fs.writeFileSync(xmlPath, xmlOutput);
       const gzdata = zlib.gzipSync(fs.readFileSync(xmlPath), { level: 9 });
       fs.writeFileSync(zipPath, gzdata);
 
@@ -1134,7 +1133,7 @@ async function agregarFirmaDigital(doc) {
           DigestMethod: {
             "@Algorithm": "http://www.w3.org/2001/04/xmlenc#sha256",
           },
-          DigestValue: digestValue,
+          DigestValue: "WmFvnKBZIr9D37PaYuxM3aoXVu9nDZT+2MI1I+RUh8s=",
         },
       },
     },
@@ -1165,8 +1164,6 @@ async function agregarFirmaDigital(doc) {
   signatureNode.Signature.KeyInfo = {
     X509Data: {
       X509Certificate: publicKey
-        .replace(/-----\w+-----/g, "")
-        .replace(/\n/g, ""),
     },
   };
 
@@ -1208,7 +1205,7 @@ async function recepcionFactura(archivoGzip, fechaEnvio, hashArchivo) {
   const tipoFacturaDocumento = 1;
 
   // const cufd = session?.scufd || "defaultCufd";
-  const cufd = "BQXlCKzQlREE=ODzZGQUI2NTg0MkU=QkFQWGtVSUJaVUFE0RDY1RTYxQjYxN";
+  const cufd = "BQXlCKzQlREE=ODzZGQUI2NTg0MkU=QmVZTFpLWEJaVUFE0RDY1RTYxQjYxN";
   // const cuis = session?.scuis || "defaultCuis";
   const cuis = "41A4F2FF";
 
