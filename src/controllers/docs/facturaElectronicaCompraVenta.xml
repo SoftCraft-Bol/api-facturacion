@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<facturaElectronicaCompraVenta xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<facturaElectronicaCompraVenta   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                                xsi:noNamespaceSchemaLocation="facturaElectronicaCompraVenta.xsd">
     <cabecera>
         <nitEmisor>1003579028</nitEmisor>

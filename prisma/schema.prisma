@@ -25,6 +25,7 @@ model Factura {
   clienteNombre    String
   clienteNitCi     String
   montoTotal       Float
+  email            String
   codigoControl    String?
   estado           String   @default("PENDIENTE")
 }

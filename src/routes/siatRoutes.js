@@ -3,17 +3,12 @@ const SiatController = require("../controllers/siatController");
 
 const router = express.Router();
 
-router.get("/verificar-comunicacion", SiatController.verificarComunicacion);
 router.get("/verificar-nit", SiatController.verificarNit);
-router.post(
-  "/sincronizar-lista-productos",
-  SiatController.sincronizarListaProductosServicios
-);
-
+/* 
 router.post(
   "/sincronizar-lista-leyendas",
   SiatController.sincronizarListaLeyendasFactura
-);
+); */
 router.post("/sincronizar-actividades", SiatController.sincronizarActividades);
 router.post(
   "/sincronizar-listaActividadesDocumentoSector",
@@ -78,9 +73,6 @@ router.post(
   SiatController.registroEventoSignificativo
 );
 
-router.post("/emitirFactura", SiatController.emitirFactura);
-router.get("/cuis", SiatController.cuis);
-router.post("/cufd", SiatController.cufd);
 router.get("/peticiones", SiatController.realizarPeticiones);
 
 module.exports = router;
